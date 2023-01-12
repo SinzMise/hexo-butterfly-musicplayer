@@ -1,0 +1,61 @@
+link(
+  href="/assets/css/tplayer.css"
+  rel="stylesheet"
+  type="text/css"
+)
+link(
+  href="/assets/plugins/FontAwesome4.1/css/font-awesome.min.css"
+  rel="stylesheet"
+  type="text/css"
+)
+script(src="/assets/js/jquery.js")
+script(src="/assets/js/jquery-ui.js")
+script(src="/assets/js/tPlayer.js")
+#t_wrapper
+  #t_cover
+    img(src="/assets/images/logo.png")
+  #t_top
+    #t_title_info
+      span.artist
+      span.title
+  #t_middle
+    #play
+    #pause.hidden
+    #t_progress.ui-corner-all.ui-slider.ui-slider-horizontal.ui-widget.ui-widget-content
+      #trackInfo
+        #error
+        #current 0:00
+        #duration 0:00
+      .ui-corner-all.ui-slider-range.ui-slider-range-min.ui-widget-header(style="width: 0%;")
+      span.ui-corner-all.ui-slider-handle.ui-state-default(style="left: 0%;" tabindex="0")
+    span#prev
+    span#next
+  #t_bottom
+    #range
+      #val
+      #vol
+      #rangeVal
+    #t_pls_show.noselectpls
+#playlist
+  ul
+    each musics in theme.musicplayer.musics
+      li(
+        t_artist=musics.author
+        t_cover=musics.image
+        t_name=musics.name
+      )
+        a(href="#")=musics.name + ' - ' + musics.author
+        audio(preload="none" src=musics.url type="audio/mp3")
+if theme.musicplayer.hitokoto
+  p#hitokoto
+    a#hitokoto_text(href="#",target="_blank",style="text-align:center;color: #fff;") :D 获取中...
+if theme.musicplayer.hitokoto
+  script.
+    fetch('https://v1.hitokoto.cn')
+      .then(response => response.json())
+      .then(data => {
+        const hitokoto = document.querySelector('#hitokoto_text')
+        hitokoto.href = `https://hitokoto.cn/?uuid=${data.uuid}`
+        hitokoto.innerText = data.hitokoto + " —— " + data.creator + "「" + data.from + "」"
+      })
+      .catch(console.error)
